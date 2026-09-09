@@ -1,6 +1,7 @@
 import { BiSolidCoffeeTogo, BiSolidEnvelope, BiSolidHome, BiSolidMap, BiSolidPhone, BiSolidUserCircle } from "react-icons/bi";
 import img from "../assets/form-bg.png";
 import { useEffect, useRef, useState } from "react";
+import { AXIOS } from "../services";
 const FormLead = () => {
 
     const [estados, setEstados] = useState([]);
@@ -33,7 +34,7 @@ const FormLead = () => {
         }
     }
 
-    function enviar(){
+    async function enviar() {
         event.preventDefault();
         const lead = {
             nome: inputNome.current.value,
@@ -43,6 +44,33 @@ const FormLead = () => {
             cidade: inputCidade.current.value,
             como: inputComo.current.value
         }
+
+        if (lead.nome == "" && lead.nome.length < 3) {
+            alert("O campo nome é obrigatório e deve ter no mínimo 3 caracteres");
+            return;
+        }
+        if (lead.email == "" && lead.email.length < 3) {
+            alert("O campo email é obrigatório e deve ter no mínimo 3 caracteres");
+            return;
+        }
+        if (lead.telefone == "" && lead.telefone.length < 3) {
+            alert("O campo telefone é obrigatório e deve ter no mínimo 3 caracteres");
+            return;
+        }
+        if (lead.estado == "") {
+            alert("O campo estado é obrigatório");
+            return;
+        }
+        if (lead.cidade == "") {
+            alert("O campo cidade é obrigatório");
+            return;
+        }
+        if (lead.como == "") {
+            alert("O campo como é obrigatório");
+            return;
+        }
+
+        const resposta = await AXIOS.post("/interessados")
 
         form.current.reset();
 
